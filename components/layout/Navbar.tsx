@@ -74,10 +74,10 @@ export default function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
         className={cn(
-          "fixed left-0 top-0 z-50 hidden w-full transition-all duration-300 md:block",
+          "fixed left-0 top-0 z-50 hidden w-full transition-all duration-500 md:block",
           isScrolled
-            ? "border-b border-[--border] bg-[--bg-base]/80 backdrop-blur-xl"
-            : "bg-transparent",
+            ? "border-b border-[--border] bg-[--bg-base]/80 backdrop-blur-xl shadow-sm"
+            : "bg-transparent py-4",
         )}
       >
         <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 lg:px-8">
@@ -124,7 +124,7 @@ export default function Navbar() {
         transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
         className="fixed inset-x-0 bottom-0 z-50 block md:hidden"
       >
-        <div className="mx-4 mb-4 flex items-center justify-around rounded-2xl border border-[--border] bg-[--bg-card]/95 px-2 py-2 backdrop-blur-xl">
+        <div className="mx-4 mb-6 flex items-center justify-around rounded-2xl border border-[--border] glass-panel bg-[--bg-card]/90 px-2 py-2 shadow-2xl">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = activeHash === link.href;
