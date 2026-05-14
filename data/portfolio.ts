@@ -28,11 +28,11 @@ export const skills = [
 export const projects = [
   {
     id: 1,
-    title: "Pengiriman Barang",
+    title: "Pengiriman Barang Nexavia",
     description: "Website Pengiriman Barang",
     image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
     techStack: ["Laravel", "Tailwind CSS", "Vue", "Mysql", "BootsTrap", "NodeJs"],
-    demoUrl: "https://project1-kamu.vercel.app",
+    demoUrl: "https://nexavia-app.vercel.app",
     repoUrl: "https://github.com/noctiferrdeathnotee-design/nexavia-app.git",
   },
   {
@@ -41,7 +41,7 @@ export const projects = [
     description: "Minimalist portfolio website built with Next.js, Tailwind CSS, and Framer Motion.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
     techStack: ["Next.Js", "Tailwind CSS", "Vercel"],
-    demoUrl: "https://project2-kamu.vercel.app",
+    demoUrl: "https://app-myportofolio.vercel.app",
     repoUrl: "https://github.com/username-kamu/project-2",
   },
 ];
