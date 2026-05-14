@@ -42,6 +42,6 @@ export const projects = [
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
     techStack: ["Next.Js", "Tailwind CSS", "Vercel"],
     demoUrl: "https://app-myportofolio.vercel.app",
-    repoUrl: "https://github.com/username-kamu/project-2",
+    repoUrl: "https://github.com/noctiferrdeathnotee-design/App-Portofolio.git",
   },
 ];
