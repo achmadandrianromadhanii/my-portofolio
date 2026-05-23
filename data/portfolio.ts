@@ -15,14 +15,16 @@ export const socialMedia = {
 };
 
 export const skills = [
-  { name: "React", icon: "https://cdn.simpleicons.org/react/00FFB2" },
-  { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/00FFB2" },
-  { name: "Tailwind CSS", icon: "https://cdn.simpleicons.org/tailwindcss/00FFB2" },
-  { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/00FFB2" },
-  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/00FFB2" },
-  { name: "HTML", icon: "https://cdn.simpleicons.org/html5/00FFB2" },
-  { name: "ASTRO", icon: "https://cdn.simpleicons.org/astro/00FFB2" },
-  { name: "Git", icon: "https://cdn.simpleicons.org/git/00FFB2" },
+  { name: "React", icon: "https://cdn.simpleicons.org/react/00F0FF", category: "Frontend", level: 90 },
+  { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/00F0FF", category: "Frontend", level: 85 },
+  { name: "Tailwind CSS", icon: "https://cdn.simpleicons.org/tailwindcss/00F0FF", category: "Frontend", level: 95 },
+  { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/00F0FF", category: "Frontend", level: 80 },
+  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/00F0FF", category: "Frontend", level: 90 },
+  { name: "HTML", icon: "https://cdn.simpleicons.org/html5/00F0FF", category: "Frontend", level: 95 },
+  { name: "ASTRO", icon: "https://cdn.simpleicons.org/astro/00F0FF", category: "Frontend", level: 75 },
+  { name: "Git", icon: "https://cdn.simpleicons.org/git/00F0FF", category: "Tools", level: 85 },
+  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/00F0FF", category: "Backend", level: 70 },
+  { name: "Figma", icon: "https://cdn.simpleicons.org/figma/00F0FF", category: "Tools", level: 80 },
 ];
 
 export const projects = [
@@ -44,4 +46,21 @@ export const projects = [
     demoUrl: "https://app-myportofolio.vercel.app",
     repoUrl: "https://github.com/noctiferrdeathnotee-design/App-Portofolio.git",
   },
+];
+
+export const experience = [
+  {
+    id: 1,
+    role: "Frontend Developer",
+    company: "Freelance",
+    period: "2023 - Present",
+    description: "Membangun antarmuka web interaktif, performant, dan responsif. Berkolaborasi dengan klien untuk menghasilkan produk digital berkualitas dengan estetika modern.",
+  },
+  {
+    id: 2,
+    role: "Web Development Intern",
+    company: "Tech Solutions",
+    period: "2022 - 2023",
+    description: "Membantu dalam pengembangan fitur frontend menggunakan React.js dan mengoptimalkan performa halaman menggunakan Tailwind CSS.",
+  }
 ];

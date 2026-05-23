@@ -8,8 +8,8 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                display: ["var(--font-jakarta)", "sans-serif"],
-                body: ["var(--font-dm-sans)", "sans-serif"],
+                display: ["var(--font-space)", "sans-serif"],
+                body: ["var(--font-inter)", "sans-serif"],
                 mono: ["var(--font-jetbrains)", "monospace"],
             },
             boxShadow: {

@@ -2,23 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
 import {
   Briefcase,
-  Code2,
+  Layers,
+  Zap,
   Home,
   User,
-  MessageCircle,
+  Send,
 } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Home", href: "#hero", icon: Home },
-  { label: "Projects", href: "#projects", icon: Briefcase },
-  { label: "Skills", href: "#skills", icon: Code2 },
+  { label: "Experience", href: "#experience", icon: Briefcase },
+  { label: "Projects", href: "#projects", icon: Layers },
+  { label: "Skills", href: "#skills", icon: Zap },
   { label: "About", href: "#about", icon: User },
-  { label: "Contact", href: "#contact", icon: MessageCircle },
+  { label: "Contact", href: "#contact", icon: Send },
 ];
 
 export default function Navbar() {
@@ -69,26 +70,23 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop — top navbar */}
-      <motion.header
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+      <header
         className={cn(
           "fixed left-0 top-0 z-50 hidden w-full transition-all duration-500 md:block",
           isScrolled
-            ? "border-b border-[--border] bg-[--bg-base]/80 backdrop-blur-xl shadow-sm"
+            ? "border-b border-[--border-accent] bg-[--bg-base]/80 backdrop-blur-xl shadow-[0_4px_30px_var(--accent-glow)]"
             : "bg-transparent py-4",
         )}
       >
         <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 lg:px-8">
           <Link
             href="#hero"
-            className="font-bold text-[--text-primary] transition-colors hover:text-[--accent]"
+            className="font-display font-bold text-xl text-[--text-primary] transition-colors hover:text-[--accent]"
           >
-            {profile.name.split(" ")[0]}.
+            {profile.name.split(" ")[0]}<span className="text-[--accent]">.</span>
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div className="relative flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = activeHash === link.href;
               return (
@@ -98,33 +96,21 @@ export default function Navbar() {
                   className={cn(
                     "relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300",
                     isActive
-                      ? "text-[--accent]"
+                      ? "text-[--accent] bg-[--accent]/10"
                       : "text-[--text-secondary] hover:text-[--text-primary]",
                   )}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-lg bg-[--accent]/10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{link.label}</span>
+                  {link.label}
                 </Link>
               );
             })}
           </div>
         </nav>
-      </motion.header>
+      </header>
 
       {/* Mobile — bottom dock navigation */}
-      <motion.nav
-        initial={{ y: 60, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-        className="fixed inset-x-0 bottom-0 z-50 block md:hidden"
-      >
-        <div className="mx-4 mb-6 flex items-center justify-around rounded-2xl border border-[--border] glass-panel bg-[--bg-card]/90 px-2 py-2 shadow-2xl">
+      <nav className="fixed inset-x-0 bottom-0 z-50 block md:hidden">
+        <div className="relative mx-3 mb-4 flex items-center justify-around rounded-2xl border border-[--border] glass-panel bg-[--bg-card]/90 px-1 py-1.5 shadow-2xl">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = activeHash === link.href;
@@ -134,30 +120,21 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all duration-300",
+                  "relative flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all duration-300",
                   isActive
-                    ? "text-[--accent]"
-                    : "text-[--text-muted] hover:text-[--text-primary]",
+                    ? "text-[--accent] bg-[--accent]/10"
+                    : "text-[--text-muted]",
                 )}
               >
-                {isActive && (
-                  <motion.span
-                    layoutId="mobile-nav-active"
-                    className="absolute inset-0 rounded-xl bg-[--accent]/10"
-                    transition={{ type: "spring", stiffness: 400, damping: 28 }}
-                  />
-                )}
-                <span className="relative z-10">
-                  <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
-                </span>
-                <span className="relative z-10 text-[10px] font-medium">
+                <Icon className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={isActive ? 2.5 : 2} />
+                <span className="text-[8px] sm:text-[9px] font-medium leading-none">
                   {link.label}
                 </span>
               </Link>
             );
           })}
         </div>
-      </motion.nav>
+      </nav>
     </>
   );
 }
