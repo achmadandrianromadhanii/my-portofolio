@@ -22,7 +22,7 @@ export default function Footer() {
     <footer className="relative border-t border-[--border] bg-[--bg-card] overflow-hidden">
       <div className="absolute left-1/2 top-0 h-32 w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[--accent-glow] blur-[80px] opacity-40 pointer-events-none" />
 
-      <div className="relative z-10 mx-auto grid max-w-5xl gap-8 px-6 py-12 md:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
+      <div className="relative z-10 mx-auto grid max-w-5xl gap-8 px-6 py-12 sm:grid-cols-2 md:grid-cols-[2fr_1fr] lg:px-8">
         <div>
           <Link
             href="#hero"
@@ -54,24 +54,6 @@ export default function Footer() {
                 <span>{profile.email}</span>
               </a>
             )}
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[--text-primary]">
-            Quick Links
-          </h2>
-
-          <div className="mt-4 grid gap-2.5">
-            {quickLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-[--text-secondary] transition-colors hover:text-[--text-primary] hover:translate-x-1 inline-flex"
-              >
-                {link.label}
-              </Link>
-            ))}
           </div>
         </div>
 

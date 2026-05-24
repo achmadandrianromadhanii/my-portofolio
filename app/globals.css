@@ -97,7 +97,7 @@ body {
 
 .section-container {
   width: 100%; max-width: 1100px; margin-inline: auto;
-  padding: 6rem 1.5rem; position: relative; z-index: 10;
+  padding: 3rem 1.5rem; position: relative; z-index: 10;
 }
 
 /* Animations */
@@ -259,4 +259,42 @@ body {
   transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
+}
+
+/* Music Player Animations */
+@keyframes eq {
+  0% { height: 4px; }
+  50% { height: 16px; }
+  100% { height: 4px; }
+}
+.animate-eq-1 { animation: eq 1s ease-in-out infinite; }
+.animate-eq-2 { animation: eq 1.2s ease-in-out infinite 0.2s; }
+.animate-eq-3 { animation: eq 0.8s ease-in-out infinite 0.4s; }
+
+@keyframes marqueeSlow {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-150%); }
+}
+.animate-marquee-slow {
+  animation: marqueeSlow 15s linear infinite;
+  will-change: transform;
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+@keyframes lyricsScroll {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+.animate-lyrics {
+  animation: lyricsScroll 20s linear infinite;
+  will-change: transform;
+}
+
+.mask-fade-vertical {
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
 }

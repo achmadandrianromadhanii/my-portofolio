@@ -46,6 +46,24 @@ export const projects = [
     demoUrl: "https://app-myportofolio.vercel.app",
     repoUrl: "https://github.com/noctiferrdeathnotee-design/App-Portofolio.git",
   },
+  {
+    id: 3,
+    title: "Inventary Barang Lab",
+    description: "Website .",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+    techStack: ["React", "Tailwind CSS", "Node.js"],
+    demoUrl: "",
+    repoUrl: "",
+  },
+  {
+    id: 4,
+    title: "Project Title 4",
+    description: "Deskripsi singkat project keempat. Ganti teks ini dengan deskripsi project Anda.",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+    techStack: ["Next.js", "TypeScript", "Vercel"],
+    demoUrl: "",
+    repoUrl: "",
+  },
 ];
 
 export const experience = [

@@ -120,7 +120,7 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
     : skills.filter(s => s.category === active);
 
   return (
-    <section id={id} ref={ref} className={cn("section-container mt-8 pt-20 pb-20", className)}>
+    <section id={id} ref={ref} className={cn("section-container pt-10 pb-10", className)}>
       <div className={`mb-10 text-center flex flex-col items-center fade-up ${visible ? "visible" : ""}`}>
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[--text-primary]">
           Tech <span className="gradient-text">Stack</span>

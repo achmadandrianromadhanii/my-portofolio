@@ -22,7 +22,7 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
   };
 
   return (
-    <section id={id} ref={ref} className={cn("section-container mt-12 pt-24 pb-24", className)}>
+    <section id={id} ref={ref} className={cn("section-container pt-10 pb-10", className)}>
       <div className={`mb-12 md:mb-24 text-center fade-up ${visible ? "visible" : ""}`}>
         <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[--text-primary]">
           Featured <span className="gradient-text">Projects</span>
