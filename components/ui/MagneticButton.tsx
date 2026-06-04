@@ -11,7 +11,12 @@ interface MagneticButtonProps {
   href?: string;
 }
 
-export default function MagneticButton({ children, className, onClick, href }: MagneticButtonProps) {
+export default function MagneticButton({
+  children,
+  className,
+  onClick,
+  href,
+}: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -29,7 +34,10 @@ export default function MagneticButton({ children, className, onClick, href }: M
 
   const inner = (
     <motion.div
-      className={cn("relative flex items-center justify-center cursor-pointer", className)}
+      className={cn(
+        "relative flex items-center justify-center cursor-pointer",
+        className,
+      )}
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
@@ -43,9 +51,17 @@ export default function MagneticButton({ children, className, onClick, href }: M
 
   if (href) {
     if (href.startsWith("http") || href.startsWith("mailto")) {
-      return <a href={href} className="inline-block">{inner}</a>;
+      return (
+        <a href={href} className="inline-block">
+          {inner}
+        </a>
+      );
     }
-    return <a href={href} className="inline-block">{inner}</a>;
+    return (
+      <a href={href} className="inline-block">
+        {inner}
+      </a>
+    );
   }
 
   return inner;

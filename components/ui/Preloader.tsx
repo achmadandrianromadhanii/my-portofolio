@@ -26,7 +26,12 @@ export default function Preloader() {
 
       <div className="relative z-10 flex flex-col items-center text-center">
         {/* Glitch Logo */}
-        <div style={{ animation: "preloaderScale 1s ease forwards, glitch 3s infinite" }} className="mb-8">
+        <div
+          style={{
+            animation: "preloaderScale 1s ease forwards, glitch 3s infinite",
+          }}
+          className="mb-8"
+        >
           <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tighter text-[--text-primary] relative">
             {profile.name.split(" ")[0]}
             <span className="text-[--accent]">.</span>
@@ -34,7 +39,10 @@ export default function Preloader() {
         </div>
 
         {/* Typing text */}
-        <div className="h-8" style={{ animation: "preloaderScale 1.5s ease forwards" }}>
+        <div
+          className="h-8"
+          style={{ animation: "preloaderScale 1.5s ease forwards" }}
+        >
           <div className="font-mono text-sm md:text-base text-[--accent-light] uppercase tracking-widest typing-effect inline-block whitespace-nowrap overflow-hidden">
             Crafting Digital Experiences
           </div>

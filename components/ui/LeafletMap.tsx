@@ -28,6 +28,7 @@ export default function LeafletMap() {
       initMap();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let map: any = null;
 
     function initMap() {
@@ -43,24 +44,24 @@ export default function LeafletMap() {
       }).setView([lat, lng], 13);
 
       // Gunakan default OpenStreetMap tile layer (Tampilan natural aslinya)
-      window.L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          maxZoom: 19,
-        },
-      ).addTo(map);
+      window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+      }).addTo(map);
 
       // Gunakan default Leaflet Marker (JANGAN custom style)
       // Karena icon default butuh image yang mungkin 404 di Next.js tanpa setup, kita define icon default manual ke CDN
       const defaultIcon = window.L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+        shadowSize: [41, 41],
       });
 
       window.L.marker([lat, lng], { icon: defaultIcon })
@@ -91,6 +92,7 @@ export default function LeafletMap() {
 // Tambahkan definisi global type
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     L: any;
   }
 }

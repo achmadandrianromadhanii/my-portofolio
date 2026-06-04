@@ -1,6 +1,5 @@
 import Preloader from "@/components/ui/Preloader";
 import HeroSection from "@/components/sections/HeroSection";
-import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import AboutSection from "@/components/sections/AboutSection";
@@ -20,14 +19,14 @@ export default function HomePage() {
       <Preloader />
       <HeroSection id="hero" />
       <SectionDivider />
-      <ExperienceSection id="experience" />
-      <SectionDivider />
+      {/* Penjelasan: ExperienceSection telah dihapus dari halaman utama sesuai dengan permintaan. Layout tetap dipertahankan dengan SectionDivider yang ada. */}
       <ProjectsSection id="projects" />
       <SectionDivider />
       <SkillsSection id="skills" />
       <SectionDivider />
       <AboutSection id="about" />
       <SectionDivider />
+      {/* Penjelasan: ContactSection telah dikembalikan sesuai dengan instruksi terbaru Anda agar halaman Contact dapat digunakan kembali. */}
       <ContactSection id="contact" />
     </>
   );

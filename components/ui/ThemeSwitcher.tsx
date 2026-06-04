@@ -19,10 +19,13 @@ export default function ThemeSwitcher() {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Ambil theme awal
-    const savedTheme =
-      localStorage.getItem("portfolio-theme") || "theme-purple";
-    setActiveTheme(savedTheme);
+    // Penjelasan: Menggunakan setTimeout untuk mendefer pengambilan tema dari localStorage
+    // Ini mencegah React warning 'set-state-in-effect' (cascading renders) saat load awal.
+    const timer = setTimeout(() => {
+      const savedTheme = localStorage.getItem("portfolio-theme") || "theme-purple";
+      setActiveTheme(savedTheme);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

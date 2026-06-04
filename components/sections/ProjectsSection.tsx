@@ -1,14 +1,28 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ExternalLink, Code2, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ExternalLink,
+  Code2,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { projects } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/lib/useInView";
 import Image from "next/image";
 
-export default function ProjectsSection({ id, className }: { id?: string; className?: string }) {
-  const [selected, setSelected] = useState<typeof projects[number] | null>(null);
+export default function ProjectsSection({
+  id,
+  className,
+}: {
+  id?: string;
+  className?: string;
+}) {
+  const [selected, setSelected] = useState<(typeof projects)[number] | null>(
+    null,
+  );
   const { ref, visible } = useInView();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -22,8 +36,14 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
   };
 
   return (
-    <section id={id} ref={ref} className={cn("section-container pt-10 pb-10", className)}>
-      <div className={`mb-12 md:mb-24 text-center fade-up ${visible ? "visible" : ""}`}>
+    <section
+      id={id}
+      ref={ref}
+      className={cn("section-container pt-10 pb-10", className)}
+    >
+      <div
+        className={`mb-12 md:mb-24 text-center fade-up ${visible ? "visible" : ""}`}
+      >
         <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[--text-primary]">
           Featured <span className="gradient-text">Projects</span>
         </h2>
@@ -57,10 +77,11 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
           className="flex overflow-x-auto gap-6 md:gap-8 pb-8 md:pb-12 px-2 snap-x snap-mandatory hide-scrollbar scroll-smooth"
         >
           {projects.map((project, index) => (
+            /* Penjelasan: Mengganti transition-all dengan transition-[transform,border-color] dan menghapus glass-panel di HP (menggunakan md:glass-panel). Mengurangi shadow-blur. Ini menghindari GPU lag drastis saat menggeser carousel di mobile. */
             <article
               key={project.id}
               onClick={() => setSelected(project)}
-              className={`snap-center shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[45vw] group flex flex-col h-full overflow-hidden rounded-[1.5rem] md:rounded-[2rem] border border-[--border] glass-panel bg-[--bg-card] shadow-[0_10px_30px_rgba(0,0,0,0.5)] cursor-pointer transition-all duration-500 hover:border-[--accent] hover:-translate-y-2 slide-left ${visible ? "visible" : ""}`}
+              className={`snap-center shrink-0 w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[45vw] group flex flex-col h-full overflow-hidden rounded-[1.5rem] md:rounded-[2rem] border border-[--border] bg-[--bg-card] md:glass-panel shadow-lg md:shadow-[0_10px_30px_rgba(0,0,0,0.5)] cursor-pointer transition-[transform,border-color] duration-300 active:scale-[0.98] hover:border-[--accent] hover:-translate-y-2 slide-left will-change-transform ${visible ? "visible" : ""}`}
               style={{ transitionDelay: `${index * 0.15}s` }}
             >
               {/* Image Container */}
@@ -76,8 +97,11 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
 
                 {/* Floating tech badges on hover */}
                 <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-wrap gap-1.5 md:gap-2 opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                  {project.techStack.slice(0, 3).map(tech => (
-                    <span key={tech} className="rounded-full bg-[--bg-base]/80 backdrop-blur-md px-2.5 py-0.5 md:px-3 md:py-1 text-[9px] md:text-[10px] font-bold text-[--accent] border border-[--border-accent]">
+                  {project.techStack.slice(0, 3).map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full bg-[--bg-base]/80 backdrop-blur-md px-2.5 py-0.5 md:px-3 md:py-1 text-[9px] md:text-[10px] font-bold text-[--accent] border border-[--border-accent]"
+                    >
                       {tech}
                     </span>
                   ))}
@@ -99,7 +123,7 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
                     View Details <ExternalLink size={14} />
                   </span>
                   <span className="text-[--text-muted] font-mono text-xs opacity-50">
-                    {String(index + 1).padStart(2, '0')}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
               </div>
@@ -110,8 +134,9 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
 
       {/* Detail Modal */}
       {selected && (
+        /* Penjelasan: Mengganti backdrop-blur-md menjadi md:backdrop-blur-md dan membuat background lebih solid di HP agar animasi modal tidak membuat patah-patah/lag. */
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-[--bg-base]/80 backdrop-blur-md p-3 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-[--bg-base]/95 md:bg-[--bg-base]/80 md:backdrop-blur-md p-3 sm:p-6"
           onClick={() => setSelected(null)}
         >
           <div
@@ -143,12 +168,16 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
 
             {/* Modal Content */}
             <div className="p-4 sm:p-6 md:p-10">
-              <h4 className="text-sm sm:text-base md:text-lg font-bold text-[--text-primary] mb-2 md:mb-3">Overview</h4>
+              <h4 className="text-sm sm:text-base md:text-lg font-bold text-[--text-primary] mb-2 md:mb-3">
+                Overview
+              </h4>
               <p className="text-sm md:text-lg text-[--text-secondary] leading-relaxed font-light mb-4 md:mb-8">
                 {selected.description}
               </p>
 
-              <h4 className="text-sm sm:text-base md:text-lg font-bold text-[--text-primary] mb-2 md:mb-3">Technologies Used</h4>
+              <h4 className="text-sm sm:text-base md:text-lg font-bold text-[--text-primary] mb-2 md:mb-3">
+                Technologies Used
+              </h4>
               <div className="mb-6 md:mb-10 flex flex-wrap gap-1.5 sm:gap-2">
                 {selected.techStack.map((tech) => (
                   <span
@@ -167,9 +196,10 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
                     href={selected.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full bg-[--accent] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--bg-base] shadow-[0_0_20px_var(--accent-glow)] transition-all duration-300 hover:shadow-[0_0_30px_var(--accent)] hover:brightness-110"
+                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full bg-[--accent] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--bg-base] shadow-[0_0_20px_var(--accent-glow)] transition-all duration-300 active:scale-95 hover:shadow-[0_0_30px_var(--accent)] hover:brightness-110"
                   >
-                    <ExternalLink size={14} className="sm:w-4 sm:h-4" /> Live Preview
+                    <ExternalLink size={14} className="sm:w-4 sm:h-4" /> Live
+                    Preview
                   </a>
                 )}
                 {selected.repoUrl && (
@@ -177,7 +207,7 @@ export default function ProjectsSection({ id, className }: { id?: string; classN
                     href={selected.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full border border-[--accent] sm:border-2 bg-[--accent-glow] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--accent] transition-all duration-300 hover:bg-[--accent] hover:text-[--bg-base] hover:shadow-[0_0_20px_var(--accent-glow)]"
+                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full border border-[--accent] sm:border-2 bg-[--accent-glow] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--accent] transition-all duration-300 active:scale-95 hover:bg-[--accent] hover:text-[--bg-base] hover:shadow-[0_0_20px_var(--accent-glow)]"
                   >
                     <Code2 size={14} className="sm:w-4 sm:h-4" /> Source Code
                   </a>

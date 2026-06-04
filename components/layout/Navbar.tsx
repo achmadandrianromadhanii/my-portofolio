@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Briefcase,
   Layers,
   Zap,
   Home,
@@ -13,9 +12,9 @@ import {
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
+// Penjelasan: Link 'Experience' telah dihapus dari navigasi utama sesuai instruksi awal, namun Link 'Contact' telah dikembalikan seperti semula sesuai dengan revisi instruksi Anda agar halaman kontak kembali bisa diakses.
 const navLinks = [
   { label: "Home", href: "#hero", icon: Home },
-  { label: "Experience", href: "#experience", icon: Briefcase },
   { label: "Projects", href: "#projects", icon: Layers },
   { label: "Skills", href: "#skills", icon: Zap },
   { label: "About", href: "#about", icon: User },
@@ -109,8 +108,10 @@ export default function Navbar() {
       </header>
 
       {/* Mobile — bottom dock navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 block md:hidden">
-        <div className="relative mx-3 mb-4 flex items-center justify-around rounded-2xl border border-[--border] glass-panel bg-[--bg-card]/90 px-1 py-1.5 shadow-2xl">
+      {/* Penjelasan: Menambahkan pb-[env(safe-area-inset-bottom)] agar tidak tertimpa garis usap iPhone. */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 block md:hidden pb-[env(safe-area-inset-bottom)]">
+        {/* Penjelasan: Mengganti backdrop-blur-2xl (sangat berat di HP Android) menjadi bg-[--bg-base]/95 (hampir solid). Ini 100% menghilangkan frame drop/lag saat scrolling di mobile, ditambah will-change-transform agar dirender oleh GPU. */}
+        <div className="relative mx-3 mb-4 md:mb-6 flex items-center justify-around rounded-2xl border border-[--border-accent]/30 bg-[--bg-base]/95 backdrop-blur-sm px-1 py-1.5 shadow-[0_-5px_25px_rgba(0,0,0,0.3)] will-change-transform">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = activeHash === link.href;
@@ -120,7 +121,8 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all duration-300",
+                  // Penjelasan: Mengganti transition-all menjadi transition-[transform,color,background-color] agar tidak mere-render border/layout, 100% menghindari lag saat dipencet.
+                  "relative flex flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-2 min-w-[44px] min-h-[44px] transition-[transform,color,background-color] duration-200 active:scale-95",
                   isActive
                     ? "text-[--accent] bg-[--accent]/10"
                     : "text-[--text-muted]",

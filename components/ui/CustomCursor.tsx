@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
 
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -72,10 +71,10 @@ export default function CustomCursor() {
         transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.2 }}
       >
         {isHovering && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="w-full h-full rounded-full border border-[--magenta] scale-110 shadow-[0_0_10px_var(--magenta-glow)]" 
+            className="w-full h-full rounded-full border border-[--magenta] scale-110 shadow-[0_0_10px_var(--magenta-glow)]"
           />
         )}
       </motion.div>

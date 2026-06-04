@@ -2,13 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Heart, Mail, MapPin } from "lucide-react";
 import { profile, socialMedia } from "@/data/portfolio";
 
-const quickLinks = [
-  { label: "Home", href: "#hero" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
+
 
 const socialLinks = [
   { label: "GitHub", url: socialMedia.github },

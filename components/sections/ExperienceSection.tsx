@@ -4,12 +4,24 @@ import { experience } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/lib/useInView";
 
-export default function ExperienceSection({ id, className }: { id?: string; className?: string }) {
+export default function ExperienceSection({
+  id,
+  className,
+}: {
+  id?: string;
+  className?: string;
+}) {
   const { ref, visible } = useInView();
 
   return (
-    <section id={id} ref={ref} className={cn("section-container relative pt-10 pb-10", className)}>
-      <div className={`mb-12 md:mb-24 text-center fade-up ${visible ? "visible" : ""}`}>
+    <section
+      id={id}
+      ref={ref}
+      className={cn("section-container relative pt-10 pb-10", className)}
+    >
+      <div
+        className={`mb-12 md:mb-24 text-center fade-up ${visible ? "visible" : ""}`}
+      >
         <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[--text-primary]">
           My <span className="gradient-text">Experience</span>
         </h2>
@@ -32,7 +44,7 @@ export default function ExperienceSection({ id, className }: { id?: string; clas
                 key={exp.id}
                 className={cn(
                   `relative flex flex-col md:flex-row items-center fade-up ${visible ? "visible" : ""}`,
-                  isEven ? "md:flex-row-reverse" : ""
+                  isEven ? "md:flex-row-reverse" : "",
                 )}
                 style={{ transitionDelay: `${index * 0.2}s` }}
               >
@@ -40,10 +52,14 @@ export default function ExperienceSection({ id, className }: { id?: string; clas
                 <div className="absolute left-4 md:left-1/2 w-3 h-3 md:w-4 md:h-4 rounded-full bg-[--bg-base] border-2 border-[--accent] shadow-[0_0_15px_var(--accent-glow)] -translate-x-1/2 z-10" />
 
                 {/* Content Card */}
-                <div className={cn(
-                  "ml-10 md:ml-0 md:w-1/2",
-                  isEven ? "md:pr-12 text-left md:text-right" : "md:pl-12 text-left"
-                )}>
+                <div
+                  className={cn(
+                    "ml-10 md:ml-0 md:w-1/2",
+                    isEven
+                      ? "md:pr-12 text-left md:text-right"
+                      : "md:pl-12 text-left",
+                  )}
+                >
                   <div className="p-5 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-[--border] glass-panel bg-[--bg-card] transition-all duration-300 hover:border-[--accent] hover:shadow-[0_0_30px_var(--accent-glow)] group">
                     <span className="inline-block py-1 px-3 rounded-full bg-[--bg-base] border border-[--border-accent] text-[10px] md:text-xs font-mono text-[--accent] mb-3 md:mb-4">
                       {exp.period}
@@ -51,7 +67,9 @@ export default function ExperienceSection({ id, className }: { id?: string; clas
                     <h3 className="font-display text-lg md:text-2xl font-bold text-[--text-primary] mb-1 group-hover:text-[--accent] transition-colors">
                       {exp.role}
                     </h3>
-                    <h4 className="text-base md:text-lg text-[--text-muted] mb-3 md:mb-4">{exp.company}</h4>
+                    <h4 className="text-base md:text-lg text-[--text-muted] mb-3 md:mb-4">
+                      {exp.company}
+                    </h4>
                     <p className="text-sm md:text-base text-[--text-secondary] font-light leading-relaxed">
                       {exp.description}
                     </p>

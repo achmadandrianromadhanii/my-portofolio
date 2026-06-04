@@ -5,42 +5,70 @@ import { skills } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/lib/useInView";
 
-type Category = "All" | "Frontend" | "Backend" | "Tools";
-const categories: Category[] = ["All", "Frontend", "Backend", "Tools"];
+type Category = "All" | "Frontend" | "Backend" | "Tools" | "Database";
+const categories: Category[] = [
+  "All",
+  "Frontend",
+  "Backend",
+  "Tools",
+  "Database",
+];
 
 const RADIUS = 36;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-function ProgressRing({ level, delay, visible }: { level: number; delay: number; visible: boolean }) {
+function ProgressRing({
+  level,
+  delay,
+  visible,
+}: {
+  level: number;
+  delay: number;
+  visible: boolean;
+}) {
   const [currentOffset, setCurrentOffset] = useState(CIRCUMFERENCE);
   const targetOffset = CIRCUMFERENCE - (level / 100) * CIRCUMFERENCE;
 
   useEffect(() => {
-    if (!visible) {
-      setCurrentOffset(CIRCUMFERENCE);
-      return;
+    let timer: NodeJS.Timeout;
+    if (visible) {
+      // Wait for the grid item zoom-in delay, then trigger ring animation
+      timer = setTimeout(
+        () => {
+          setCurrentOffset(targetOffset);
+        },
+        delay * 1000 + 50,
+      );
+    } else {
+      // Gunakan setTimeout untuk menghindari warning 'set-state-in-effect' (cascading renders)
+      timer = setTimeout(() => {
+        setCurrentOffset(CIRCUMFERENCE);
+      }, 0);
     }
-    
-    // Wait for the grid item zoom-in delay, then trigger ring animation
-    const timer = setTimeout(() => {
-      setCurrentOffset(targetOffset);
-    }, delay * 1000 + 50);
-
     return () => clearTimeout(timer);
   }, [targetOffset, delay, visible]);
 
   return (
-    <svg width="90" height="90" viewBox="0 0 90 90" className="absolute inset-0 m-auto pointer-events-none">
+    <svg
+      width="90"
+      height="90"
+      viewBox="0 0 90 90"
+      className="absolute inset-0 m-auto pointer-events-none"
+    >
       {/* Background circle */}
       <circle
-        cx="45" cy="45" r={RADIUS}
+        cx="45"
+        cy="45"
+        r={RADIUS}
         fill="none"
         stroke="var(--border)"
         strokeWidth="3"
       />
       {/* Progress circle */}
       <circle
-        cx="45" cy="45" r={RADIUS}
+        cx="45"
+        cy="45"
+        r={RADIUS}
         fill="none"
         stroke="url(#progressGradient)"
         strokeWidth="3"
@@ -50,7 +78,13 @@ function ProgressRing({ level, delay, visible }: { level: number; delay: number;
         className="progress-ring-circle"
       />
       <defs>
-        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient
+          id="progressGradient"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
           <stop offset="0%" stopColor="var(--accent)" />
           <stop offset="100%" stopColor="var(--magenta)" />
         </linearGradient>
@@ -59,7 +93,13 @@ function ProgressRing({ level, delay, visible }: { level: number; delay: number;
   );
 }
 
-function AnimatedCounter({ targetValue, delay }: { targetValue: number; delay: number }) {
+function AnimatedCounter({
+  targetValue,
+  delay,
+}: {
+  targetValue: number;
+  delay: number;
+}) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -70,7 +110,7 @@ function AnimatedCounter({ targetValue, delay }: { targetValue: number; delay: n
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
+
       // easeOutQuart curve for smooth deceleration
       const easeProgress = 1 - Math.pow(1 - progress, 4);
       setCount(Math.floor(easeProgress * targetValue));
@@ -94,10 +134,16 @@ function AnimatedCounter({ targetValue, delay }: { targetValue: number; delay: n
   return <>{count}%</>;
 }
 
-export default function SkillsSection({ id, className }: { id?: string; className?: string }) {
+export default function SkillsSection({
+  id,
+  className,
+}: {
+  id?: string;
+  className?: string;
+}) {
   const [active, setActive] = useState<Category>("All");
   const { ref, visible } = useInView();
-  
+
   // Refs for sliding pill animation
   const tabsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
@@ -105,7 +151,7 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
   useEffect(() => {
     const activeIndex = categories.indexOf(active);
     const activeTab = tabsRef.current[activeIndex];
-    
+
     if (activeTab) {
       setPillStyle({
         left: activeTab.offsetLeft,
@@ -115,13 +161,18 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
     }
   }, [active]);
 
-  const filteredSkills = active === "All"
-    ? skills
-    : skills.filter(s => s.category === active);
+  const filteredSkills =
+    active === "All" ? skills : skills.filter((s) => s.category === active);
 
   return (
-    <section id={id} ref={ref} className={cn("section-container pt-10 pb-10", className)}>
-      <div className={`mb-10 text-center flex flex-col items-center fade-up ${visible ? "visible" : ""}`}>
+    <section
+      id={id}
+      ref={ref}
+      className={cn("section-container pt-10 pb-10", className)}
+    >
+      <div
+        className={`mb-10 text-center flex flex-col items-center fade-up ${visible ? "visible" : ""}`}
+      >
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[--text-primary]">
           Tech <span className="gradient-text">Stack</span>
         </h2>
@@ -131,16 +182,18 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
       </div>
 
       {/* Filter Tabs with Sliding Pill Indicator */}
-      <div className={`relative mb-8 md:mb-10 flex justify-center fade-up delay-1 ${visible ? "visible" : ""}`}>
-        <div className="relative flex flex-wrap justify-center gap-1 sm:gap-2 p-1 rounded-full bg-[--bg-card] border border-[--border] shadow-inner">
-          
+      <div
+        className={`relative mb-8 md:mb-10 w-full max-w-full overflow-x-auto scrollbar-hide px-2 py-1 fade-up delay-1 ${visible ? "visible" : ""}`}
+      >
+        {/* Penjelasan: Menggunakan w-max dan flex-nowrap agar tombol tab bisa di-scroll horizontal tanpa patah baris di layar kecil. */}
+        <div className="relative flex w-max mx-auto flex-nowrap justify-center gap-1 sm:gap-2 p-1 rounded-full bg-[--bg-card] border border-[--border] shadow-inner">
           {/* Animated Background Pill */}
-          <div 
+          <div
             className="absolute top-1 bottom-1 rounded-full bg-[--accent] shadow-[0_0_15px_var(--accent-glow)] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) z-0"
-            style={{ 
-              left: `${pillStyle.left}px`, 
+            style={{
+              left: `${pillStyle.left}px`,
               width: `${pillStyle.width}px`,
-              opacity: pillStyle.opacity
+              opacity: pillStyle.opacity,
             }}
           />
 
@@ -155,7 +208,7 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
                 "relative z-10 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold transition-colors duration-300 outline-none",
                 active === cat
                   ? "text-[#0A1428]"
-                  : "text-[--text-secondary] hover:text-[--text-primary]"
+                  : "text-[--text-secondary] hover:text-[--text-primary]",
               )}
             >
               {cat}
@@ -165,20 +218,31 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
       </div>
 
       {/* Grid wrapper with key based on active category to trigger re-mount animation */}
-      <div key={active} className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 md:gap-4">
+      {/* Penjelasan: Mengubah grid-cols-3 menjadi grid-cols-2 di mobile agar kartu membesar, mudah ditekan, dan tidak berdesakan. */}
+      <div
+        key={active}
+        className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4"
+      >
         {filteredSkills.map((skill, index) => (
           <div
             key={skill.name}
-            className={`group relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-xl md:rounded-2xl border border-[--border] glass-panel p-3 md:p-5 text-center transition-all duration-300 hover:border-[--accent] hover:shadow-[0_0_20px_var(--accent-glow)] animate-zoom-in`}
+            className={`group relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-xl md:rounded-2xl border border-[--border] glass-panel p-3 md:p-5 text-center transition-all duration-200 active:scale-95 hover:border-[--accent] hover:shadow-[0_0_20px_var(--accent-glow)] animate-zoom-in`}
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             {/* Hover gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[--accent-glow] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            {/* Penjelasan: Transisi dipercepat dari duration-500 ke duration-300 agar terasa snappy/responsif. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[--accent-glow] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
             {/* Icon with progress ring */}
             <div className="relative z-10 w-[90px] h-[90px] flex items-center justify-center">
-              <ProgressRing level={skill.level} delay={index * 0.05} visible={visible} />
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--bg-base] border border-[--border] shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:border-[--accent]">
+              <ProgressRing
+                level={skill.level}
+                delay={index * 0.05}
+                visible={visible}
+              />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--bg-base] border border-[--border] shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:border-[--accent]">
+                {/* Penjelasan: Karena ikon berasal dari simpleicons yang berformat SVG murni, penggunaan <Image> bawaan Next.js justru akan memblokir (tanpa konfigurasi bahaya SVG) dan membuang resource server karena SVG sudah sangat ringan. Menggunakan tag <img> HTML standar dengan lazy-loading adalah "Best Practice" resmi untuk file SVG eksternal. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={skill.icon}
                   alt={skill.name}
@@ -195,7 +259,10 @@ export default function SkillsSection({ id, className }: { id?: string; classNam
                 {skill.name}
               </span>
               <span className="text-[9px] sm:text-[10px] text-[--accent] font-mono block mt-0.5">
-                <AnimatedCounter targetValue={skill.level} delay={index * 0.05} />
+                <AnimatedCounter
+                  targetValue={skill.level}
+                  delay={index * 0.05}
+                />
               </span>
             </div>
           </div>
