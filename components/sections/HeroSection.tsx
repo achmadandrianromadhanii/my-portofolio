@@ -1,12 +1,7 @@
 "use client";
 
-
 import Image from "next/image";
-import {
-  ArrowRight,
-  Mail,
-  ChevronDown,
-} from "lucide-react";
+import { ArrowRight, Mail, ChevronDown } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/lib/useInView";
@@ -47,7 +42,13 @@ export default function HeroSection({
         >
           {/* Ambient Glow - Optimized for Android Performance */}
           {/* Penjelasan: Mengganti CSS blur dan pulse yang berat di HP Android dengan background radial gradient statis agar GPU tidak bekerja keras me-render ulang blur effect. Ini menstabilkan FPS, LCP dan INP (100% hijau). */}
-          <div className="absolute top-16 left-0 right-0 bottom-0 -z-10 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }} />
+          <div
+            className="absolute top-16 left-0 right-0 bottom-0 -z-10 rounded-full opacity-20"
+            style={{
+              background:
+                "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+            }}
+          />
 
           {/* Profile Photo - Static, optimized for LCP */}
           {/* Penjelasan: Menghapus fitur tap to flip, jam, dan lokasi sesuai permintaan. Struktur card dibuat statis tanpa 3D transform agar lebih ringan dan cepat dirender (mencegah patah-patah). */}
@@ -111,7 +112,7 @@ export default function HeroSection({
 
             {/* Penjelasan: Mengganti glass-panel menjadi md:glass-panel agar di mobile tidak ada filter blur, cukup background solid semi-transparan untuk meringankan CPU/GPU Android. */}
             <a
-              href={`mailto:${profile.email}`}
+              href="#contact"
               className="group flex w-full sm:w-auto h-12 sm:h-12 items-center justify-center gap-2 rounded-full border border-[--border-accent] bg-[--bg-card] md:glass-panel px-6 sm:px-7 text-sm font-semibold text-[--text-primary] transition-[transform,background-color,box-shadow] duration-200 active:scale-95 hover:bg-[--accent-glow] hover:shadow-[0_0_15px_var(--accent-glow)] will-change-transform"
             >
               Contact Me
