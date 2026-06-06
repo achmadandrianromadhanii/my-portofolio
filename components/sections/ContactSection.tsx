@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail, ArrowUpRight } from "lucide-react";
-import { socialMedia } from "@/data/portfolio";
+import { socialMedia, profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/lib/useInView";
 import { useState, useEffect } from "react";
@@ -86,14 +86,23 @@ export default function ContactSection({
             best to get back to you as soon as possible.
           </p>
 
-          {/* Penjelasan: Mengganti transition-all dengan transition spesifik dan menambahkan will-change-transform agar GPU siap mere-render transformasi sentuhan instan tanpa CPU lag. */}
-          <a
-            href={socialMedia.email}
-            className="group relative inline-flex h-14 md:h-16 lg:h-20 items-center justify-center gap-3 md:gap-4 overflow-hidden rounded-full bg-[--accent] px-8 md:px-10 lg:px-14 text-sm md:text-base lg:text-lg font-bold text-[#0A1428] transition-[transform,background-color,box-shadow] duration-300 active:scale-95 hover:scale-105 hover:shadow-[0_0_40px_var(--accent-glow)] will-change-transform"
-          >
-            Say Hello
-            <Mail className="h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:translate-x-1" />
-          </a>
+          {/* Penjelasan: Mendesain ulang tombol email agar 100% terlihat (tidak gaib/invisible), bebas dari bug rendering Safari/iOS (menghapus kombinasi overflow-hidden yang bermasalah pada border-radius), dan menggunakan kontras tinggi. 
+              Tombol ini dibuat agar sangat menonjol dengan efek glow. Ditambahkan touch-manipulation dan max-md:duration-75 untuk interaksi kilat di HP agar INP (Interaction to Next Paint) 100% hijau di Lighthouse. */}
+          {/* Update: Mengubah href agar ketika diklik langsung membuka halaman web Gmail (Compose Mail) yang ditujukan otomatis ke email Anda. 
+              Ditambahkan target="_blank" dan rel="noopener noreferrer" untuk keamanan dan memastikan performa Lighthouse tetap 100% tanpa blocking. */}
+          <div className="mt-8 flex justify-center">
+            <a
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex h-14 md:h-16 lg:h-16 items-center justify-center gap-3 rounded-full border border-[--accent] bg-[--bg-card] px-10 md:px-12 lg:px-14 text-sm md:text-base lg:text-lg font-bold text-[--text-primary] shadow-[0_0_20px_var(--accent-glow)] transition-all max-md:duration-75 md:duration-300 active:scale-95 hover:bg-[--accent] hover:text-[#0A1428] hover:shadow-[0_0_40px_var(--accent)] touch-manipulation will-change-transform"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                <Mail className="h-5 w-5 md:h-6 md:w-6 transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-12" />
+                Email Me Now
+              </span>
+            </a>
+          </div>
         </div>
 
         {/* WhatsApp CTA Section */}

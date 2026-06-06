@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   ExternalLink,
   Code2,
@@ -25,6 +25,23 @@ export default function ProjectsSection({
   );
   const { ref, visible } = useInView();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  /* Penjelasan: Menggunakan useEffect untuk mencegah scrolling pada body belakang ketika modal terbuka khusus di mobile.
+     Ini mengatasi masalah background yang ikut terscroll saat modal sedang aktif. */
+  useEffect(() => {
+    // Memastikan hanya berlaku di mobile (lebar layar kurang dari 768px) sesuai permintaan.
+    const isMobile = window.innerWidth < 768;
+    if (selected && isMobile) {
+      document.body.style.overflow = "hidden"; // Mengunci scroll body
+    } else {
+      document.body.style.overflow = "unset"; // Mengembalikan scroll body
+    }
+
+    // Cleanup saat komponen unmount atau saat modal tertutup
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selected]);
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -135,12 +152,14 @@ export default function ProjectsSection({
       {/* Detail Modal */}
       {selected && (
         /* Penjelasan: Mengganti backdrop-blur-md menjadi md:backdrop-blur-md dan membuat background lebih solid di HP agar animasi modal tidak membuat patah-patah/lag. */
+        /* Update: Menambahkan max-md:bg-[#0A1428] agar latar belakang 100% solid (tidak transparan) di mobile. */
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-[--bg-base]/95 md:bg-[--bg-base]/80 md:backdrop-blur-md p-3 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-[--bg-base]/95 max-md:bg-[#0A1428] md:bg-[--bg-base]/80 md:backdrop-blur-md p-3 sm:p-6"
           onClick={() => setSelected(null)}
         >
+          {/* Update: Menambahkan max-md:bg-[#0A1428] untuk background modal yang tidak transparan di mobile, serta overscroll-contain agar scroll tidak bocor ke belakang. */}
           <div
-            className="relative w-full max-w-4xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-[1.2rem] sm:rounded-[1.5rem] md:rounded-[2rem] border border-[--border-accent] bg-[--bg-card] shadow-[0_0_50px_var(--accent-glow)]"
+            className="relative w-full max-w-4xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-[1.2rem] sm:rounded-[1.5rem] md:rounded-[2rem] border border-[--border-accent] bg-[--bg-card] max-md:bg-[#0A1428] shadow-[0_0_50px_var(--accent-glow)] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -192,22 +211,24 @@ export default function ProjectsSection({
               {/* Fixed buttons — both clearly visible */}
               <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 pt-4 sm:pt-6 md:pt-8 border-t border-[--border]">
                 {selected.demoUrl && (
+                  /* Update: Menambahkan touch-manipulation dan max-md:duration-75 untuk menghilangkan delay saat tombol di klik di perangkat mobile, membuatnya terasa sangat responsif dan ringan tanpa merusak lighthouse. */
                   <a
                     href={selected.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full bg-[--accent] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--bg-base] shadow-[0_0_20px_var(--accent-glow)] transition-all duration-300 active:scale-95 hover:shadow-[0_0_30px_var(--accent)] hover:brightness-110"
+                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full bg-[--accent] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--bg-base] shadow-[0_0_20px_var(--accent-glow)] transition-all max-md:duration-75 md:duration-300 active:scale-95 hover:shadow-[0_0_30px_var(--accent)] hover:brightness-110 touch-manipulation"
                   >
                     <ExternalLink size={14} className="sm:w-4 sm:h-4" /> Live
                     Preview
                   </a>
                 )}
                 {selected.repoUrl && (
+                  /* Update: Menambahkan touch-manipulation dan max-md:duration-75 untuk klik yang responsif di mobile. */
                   <a
                     href={selected.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full border border-[--accent] sm:border-2 bg-[--accent-glow] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--accent] transition-all duration-300 active:scale-95 hover:bg-[--accent] hover:text-[--bg-base] hover:shadow-[0_0_20px_var(--accent-glow)]"
+                    className="inline-flex h-10 sm:h-11 md:h-12 items-center justify-center gap-2 rounded-full border border-[--accent] sm:border-2 bg-[--accent-glow] px-5 sm:px-6 md:px-8 text-xs sm:text-sm font-bold text-[--accent] transition-all max-md:duration-75 md:duration-300 active:scale-95 hover:bg-[--accent] hover:text-[--bg-base] hover:shadow-[0_0_20px_var(--accent-glow)] touch-manipulation"
                   >
                     <Code2 size={14} className="sm:w-4 sm:h-4" /> Source Code
                   </a>

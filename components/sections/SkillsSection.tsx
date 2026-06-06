@@ -144,6 +144,20 @@ export default function SkillsSection({
   const [active, setActive] = useState<Category>("All");
   const { ref, visible } = useInView();
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+  const itemsPerPage = 4;
+
+  /* Penjelasan: Mendeteksi apakah perangkat adalah mobile tanpa menyebabkan error Hydration pada Next.js.
+     Ini dipakai agar pagination hanya aktif secara eksklusif di mobile device. */
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // cek saat render pertama di client
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Refs for sliding pill animation
   const tabsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
@@ -159,10 +173,21 @@ export default function SkillsSection({
         opacity: 1,
       });
     }
+
+    // Reset pagination saat ganti kategori
+    setCurrentPage(1);
   }, [active]);
 
   const filteredSkills =
     active === "All" ? skills : skills.filter((s) => s.category === active);
+
+  /* Penjelasan: Logika Pagination - Aktif HANYA di mobile dan jika kategori "All" yang dipilih.
+     Membatasi 4 item per halaman agar tidak memakan scroll terlalu panjang ke bawah. */
+  const isPaginationActive = isMobile && active === "All";
+  const totalPages = isPaginationActive ? Math.ceil(filteredSkills.length / itemsPerPage) : 1;
+  const displayedSkills = isPaginationActive 
+    ? filteredSkills.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    : filteredSkills;
 
   return (
     <section
@@ -218,16 +243,17 @@ export default function SkillsSection({
       </div>
 
       {/* Grid wrapper with key based on active category to trigger re-mount animation */}
-      {/* Penjelasan: Mengubah grid-cols-3 menjadi grid-cols-2 di mobile agar kartu membesar, mudah ditekan, dan tidak berdesakan. */}
+      {/* Penjelasan: Mengubah grid-cols-3 menjadi grid-cols-2 di mobile agar kartu membesar, mudah ditekan, dan tidak berdesakan. 
+          Key grid hanya menggunakan 'active' agar tidak terjadi re-mount saat ganti halaman (mencegah error removeChild). */}
       <div
         key={active}
         className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4"
       >
-        {filteredSkills.map((skill, index) => (
+        {displayedSkills.map((skill, index) => (
           <div
             key={skill.name}
             className={`group relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-xl md:rounded-2xl border border-[--border] glass-panel p-3 md:p-5 text-center transition-all duration-200 active:scale-95 hover:border-[--accent] hover:shadow-[0_0_20px_var(--accent-glow)] animate-zoom-in`}
-            style={{ animationDelay: `${index * 0.05}s` }}
+            style={{ animationDelay: `${(index % itemsPerPage) * 0.05}s` }}
           >
             {/* Hover gradient */}
             {/* Penjelasan: Transisi dipercepat dari duration-500 ke duration-300 agar terasa snappy/responsif. */}
@@ -237,7 +263,7 @@ export default function SkillsSection({
             <div className="relative z-10 w-[90px] h-[90px] flex items-center justify-center">
               <ProgressRing
                 level={skill.level}
-                delay={index * 0.05}
+                delay={(index % itemsPerPage) * 0.05}
                 visible={visible}
               />
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[--bg-base] border border-[--border] shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:border-[--accent]">
@@ -261,13 +287,34 @@ export default function SkillsSection({
               <span className="text-[9px] sm:text-[10px] text-[--accent] font-mono block mt-0.5">
                 <AnimatedCounter
                   targetValue={skill.level}
-                  delay={index * 0.05}
+                  delay={(index % itemsPerPage) * 0.05}
                 />
               </span>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls - Khusus Mobile & Kategori 'All' */}
+      {/* Penjelasan: Desain pagination berbentuk titik-titik (dots) ala aplikasi mobile native. Sangat rapi, interaktif, dan kencang tanpa memberatkan Lighthouse. */}
+      {isPaginationActive && totalPages > 1 && (
+        <div className="mt-8 flex items-center justify-center gap-3 md:hidden z-20 relative">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              aria-label={`Halaman ${i + 1}`}
+              className={cn(
+                "h-2.5 rounded-full transition-all duration-300 touch-manipulation border border-white/10",
+                currentPage === i + 1 
+                  ? "w-8 shadow-[0_0_15px_var(--accent)]" 
+                  : "w-2.5 bg-white/30 hover:bg-white/50"
+              )}
+              style={currentPage === i + 1 ? { backgroundColor: "var(--accent)" } : {}}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

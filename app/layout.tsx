@@ -91,7 +91,37 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${inter.variable} ${space.variable} ${jetbrains.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-[--bg-base] text-[--text-primary] antialiased min-h-screen flex flex-col relative font-body">
+      <head>
+        {/* Penjelasan: Script anti-bajak ini dipasang khusus untuk menetralisir ulah Ekstensi Chrome "Mobile Simulator".
+            Ekstensi tersebut mengubah div internal Next.js menjadi '.simulator-pre-loader'.
+            Script ini secara agresif akan mengembalikan div tersebut ke asalnya (hidden)
+            sebelum React sempat mendeteksi perubahan, sehingga error Hydration Mismatch tidak akan terjadi. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var observer = new MutationObserver(function(mutations) {
+                    var badEls = document.querySelectorAll('.simulator-pre-loader');
+                    for (var i = 0; i < badEls.length; i++) {
+                      var el = badEls[i];
+                      el.removeAttribute('class');
+                      el.removeAttribute('aria-label');
+                      el.removeAttribute('role');
+                      el.setAttribute('hidden', 'true');
+                    }
+                  });
+                  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body 
+        className="bg-[--bg-base] text-[--text-primary] antialiased min-h-screen flex flex-col relative font-body"
+        suppressHydrationWarning
+      >
         {/* Ambient background glows */}
         <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[--accent] opacity-[0.05] blur-[120px]" />
