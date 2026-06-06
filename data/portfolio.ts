@@ -10,7 +10,7 @@ export const profile = {
 
 export const socialMedia = {
   email: "mailto:achmadandrianromadhani@gmail.com",
-  github: "https://github.com/noctiferrdeathnotee-design",
+  github: "https://github.com/achmadandrianromadhanii",
   linkedin: "https://linkedin.com/in/achmadandrian",
 };
 
@@ -56,7 +56,7 @@ export const projects = [
     description: "Website inventaris lab.",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
     techStack: ["laravel", "blade", "Node.js", "mysql", "tailwinds", "vercel"],
-    demoUrl: "",
+    demoUrl: "https://myinventariss.vercel.app",
     repoUrl: "",
   },
   {
