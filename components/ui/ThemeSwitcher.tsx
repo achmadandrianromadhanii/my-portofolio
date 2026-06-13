@@ -6,6 +6,7 @@ import { Palette, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const themes = [
+  { id: "theme-cyan", name: "Cyan", color: "#00F0FF" },
   { id: "theme-purple", name: "Purple", color: "#8b5cf6" },
   { id: "theme-blue", name: "Blue", color: "#3b82f6" },
   { id: "theme-emerald", name: "Emerald", color: "#10b981" },
@@ -15,21 +16,22 @@ const themes = [
 
 export default function ThemeSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTheme, setActiveTheme] = useState("theme-purple");
+  const [activeTheme, setActiveTheme] = useState("theme-cyan");
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Penjelasan: Menggunakan setTimeout untuk mendefer pengambilan tema dari localStorage
-    // Ini mencegah React warning 'set-state-in-effect' (cascading renders) saat load awal.
     const timer = setTimeout(() => {
-      const savedTheme = localStorage.getItem("portfolio-theme") || "theme-purple";
+      const savedTheme =
+        localStorage.getItem("portfolio-theme") || "theme-cyan";
       setActiveTheme(savedTheme);
+      if (savedTheme !== "theme-cyan") {
+        document.documentElement.classList.add(savedTheme);
+      }
     }, 0);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    // Handle klik di luar untuk menutup popover
     function handleClickOutside(event: MouseEvent) {
       if (
         popoverRef.current &&
@@ -43,15 +45,10 @@ export default function ThemeSwitcher() {
   }, []);
 
   const changeTheme = (themeId: string) => {
-    // Hapus semua class theme yang ada
     themes.forEach((t) => document.documentElement.classList.remove(t.id));
-
-    // Tambah class theme baru
     document.documentElement.classList.add(themeId);
     localStorage.setItem("portfolio-theme", themeId);
     setActiveTheme(themeId);
-
-    // Tutup popup setelah memilih dengan sedikit delay biar animasinya terlihat
     setTimeout(() => setIsOpen(false), 200);
   };
 
@@ -62,10 +59,10 @@ export default function ThemeSwitcher() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-accent] bg-[--bg-glass] text-[--accent-light] shadow-[0_0_15px_var(--accent-glow)] backdrop-blur-md transition-all hover:bg-[--accent]/20"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-[--border-accent] bg-[--bg-card] text-[--accent] shadow-[0_0_15px_var(--accent-glow)] backdrop-blur-md transition-all hover:bg-[--accent]/20"
         aria-label="Pilih Tema"
       >
-        <Palette className="h-5 w-5 animate-pulse" />
+        <Palette className="h-5 w-5" />
       </motion.button>
 
       <AnimatePresence>
@@ -75,11 +72,10 @@ export default function ThemeSwitcher() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-1/2 mt-3 flex -translate-x-1/2 gap-2 rounded-2xl border border-[--border-accent] bg-[--bg-card]/95 p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:left-0 sm:translate-x-0"
+            className="absolute right-0 bottom-full mb-3 md:bottom-auto md:top-full md:mt-3 flex gap-2 rounded-2xl border border-[--border-accent] bg-[--bg-card]/95 p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl"
           >
             {themes.map((theme) => {
               const isActive = activeTheme === theme.id;
-
               return (
                 <button
                   key={theme.id}
@@ -97,8 +93,6 @@ export default function ThemeSwitcher() {
                   {isActive && (
                     <Check className="h-4 w-4 text-white" strokeWidth={3} />
                   )}
-
-                  {/* Tooltip sederhana saat hover di desktop */}
                   <span className="pointer-events-none absolute -bottom-8 scale-0 rounded bg-white px-2 py-1 text-[10px] font-bold text-black opacity-0 transition-all group-hover:scale-100 group-hover:opacity-100">
                     {theme.name}
                   </span>

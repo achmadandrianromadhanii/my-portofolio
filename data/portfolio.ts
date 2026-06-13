@@ -70,6 +70,13 @@ export const projects = [
   },
 ];
 
+export const stats = [
+  { value: 3, label: "Years Experience", suffix: "+" },
+  { value: 10, label: "Projects Completed", suffix: "+" },
+  { value: 5, label: "Happy Clients", suffix: "+" },
+  { value: 1000, label: "GitHub Commits", suffix: "+" },
+];
+
 export const experience = [
   {
     id: 1,

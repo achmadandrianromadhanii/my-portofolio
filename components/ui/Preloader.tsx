@@ -7,7 +7,13 @@ export default function Preloader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDone(true), 3500);
+    // Only show preloader on first visit per session
+    if (sessionStorage.getItem("preloader-shown")) {
+      setDone(true);
+      return;
+    }
+    sessionStorage.setItem("preloader-shown", "1");
+    const timer = setTimeout(() => setDone(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -16,7 +22,7 @@ export default function Preloader() {
   return (
     <div
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[--bg-base] px-4"
-      style={{ animation: "preloaderFade 4s ease-in-out forwards" }}
+      style={{ animation: "preloaderFade 3s ease-in-out forwards" }}
     >
       {/* Subtle background glow */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -28,7 +34,7 @@ export default function Preloader() {
         {/* Glitch Logo */}
         <div
           style={{
-            animation: "preloaderScale 1s ease forwards, glitch 3s infinite",
+            animation: "preloaderScale 1s ease forwards",
           }}
           className="mb-8"
         >

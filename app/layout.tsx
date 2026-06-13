@@ -1,9 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CustomCursor from "@/components/ui/CustomCursor";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import ScrollToTop from "@/components/ui/ScrollToTop";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import { profile } from "@/data/portfolio";
 import "./globals.css";
 
@@ -11,7 +15,7 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 const space = Space_Grotesk({
@@ -34,6 +38,14 @@ const siteUrl =
 const cleanBio = profile.bio.replace(/\s+/g, " ").trim();
 const seoDescription =
   cleanBio.length > 155 ? `${cleanBio.substring(0, 152).trim()}...` : cleanBio;
+
+/* [NEXT.JS 16 FIX] viewport harus export terpisah, bukan di dalam metadata */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -92,10 +104,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <head>
-        {/* Penjelasan: Script anti-bajak ini dipasang khusus untuk menetralisir ulah Ekstensi Chrome "Mobile Simulator".
-            Ekstensi tersebut mengubah div internal Next.js menjadi '.simulator-pre-loader'.
-            Script ini secara agresif akan mengembalikan div tersebut ke asalnya (hidden)
-            sebelum React sempat mendeteksi perubahan, sehingga error Hydration Mismatch tidak akan terjadi. */}
+        {/* Script anti-bajak untuk menetralisir ekstensi Chrome "Mobile Simulator". */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -122,14 +131,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className="bg-[--bg-base] text-[--text-primary] antialiased min-h-screen flex flex-col relative font-body"
         suppressHydrationWarning
       >
-        {/* Ambient background glows */}
-        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[--accent] opacity-[0.05] blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[--magenta] opacity-[0.05] blur-[120px]" />
-        </div>
-        {/* Penjelasan: Menyembunyikan efek noise-bg di layar mobile (hidden md:block) karena filter SVG sangat membebani GPU Android lama dan menyebabkan lag parah saat scroll. Di desktop tetap muncul. */}
+        {/* Custom cursor — desktop only */}
+        <CustomCursor />
+
+        {/* Scroll progress bar */}
+        <ScrollProgress />
+
+        {/* Animated background — floating orbs + aurora + stars */}
+        <AnimatedBackground />
+        {/* Noise texture — hidden on mobile for performance */}
         <div
-          className="noise-bg pointer-events-none fixed inset-0 z-[100] opacity-[0.03] hidden md:block"
+          className="noise-bg pointer-events-none fixed inset-0 z-[100] hidden md:block"
           aria-hidden="true"
         />
         <Navbar />
@@ -140,8 +152,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <Footer />
+
+        {/* Scroll to top button */}
+        <ScrollToTop />
+
         <Toaster
-          position="bottom-right"
+          position="top-right"
           theme="dark"
           toastOptions={{
             style: {
@@ -150,6 +166,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               backdropFilter: "blur(16px)",
               color: "var(--text-primary)",
               fontSize: "13px",
+              marginTop: "4rem",
             },
           }}
         />
